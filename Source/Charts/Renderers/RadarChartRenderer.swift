@@ -335,19 +335,24 @@ open class RadarChartRenderer: LineRadarRenderer
         
         for j in 0 ..< labelCount
         {
-            for i in 0 ..< data.entryCount
-            {
-                let r = CGFloat(chart.yAxis.entries[j] - chart.chartYMin) * factor
-
-                let p1 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i) + rotationangle)
-                let p2 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i + 1) + rotationangle)
-                
-                _webLineSegmentsBuffer[0].x = p1.x
-                _webLineSegmentsBuffer[0].y = p1.y
-                _webLineSegmentsBuffer[1].x = p2.x
-                _webLineSegmentsBuffer[1].y = p2.y
-                
-                context.strokeLineSegments(between: _webLineSegmentsBuffer)
+            let r = CGFloat(chart.yAxis.entries[j] - chart.chartYMin) * factor
+            
+            if chart.circleWeb {
+                context.addArc(center: center, radius: r, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
+                context.strokePath()
+            } else {
+                for i in 0 ..< data.entryCount
+                {
+                    let p1 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i) + rotationangle)
+                    let p2 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i + 1) + rotationangle)
+                    
+                    _webLineSegmentsBuffer[0].x = p1.x
+                    _webLineSegmentsBuffer[0].y = p1.y
+                    _webLineSegmentsBuffer[1].x = p2.x
+                    _webLineSegmentsBuffer[1].y = p2.y
+                    
+                    context.strokeLineSegments(between: _webLineSegmentsBuffer)
+                }
             }
         }
         

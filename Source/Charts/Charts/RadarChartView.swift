@@ -35,6 +35,9 @@ open class RadarChartView: PieRadarChartViewBase
     /// flag indicating if the web lines should be drawn or not
     @objc open var drawWeb = true
     
+    /// draw web like circle
+    @objc open var circleWeb = false
+    
     /// modulus that determines how many labels and web-lines are skipped before the next is drawn
     private var _skipWebLineCount = 0
     
