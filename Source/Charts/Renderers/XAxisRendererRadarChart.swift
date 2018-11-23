@@ -60,11 +60,17 @@ open class XAxisRendererRadarChart: XAxisRenderer
             
             let p = center.moving(distance: CGFloat(chart.yRange) * factor + xAxis.labelRotatedWidth / 2.0, atAngle: angle)
             
+            let y = i == 0 ? p.y + xAxis.labelRotatedHeight / 2.0 : p.y - xAxis.labelRotatedHeight / 2.0;
+            
+            let paragraph = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
+            paragraph.alignment = .center
+            
             drawLabel(context: context,
                       formattedLabel: label,
                       x: p.x,
-                      y: p.y - xAxis.labelRotatedHeight / 2.0,
-                      attributes: [NSAttributedString.Key.font: labelFont, NSAttributedString.Key.foregroundColor: labelTextColor],
+                      y: y,
+                      attributes: [NSAttributedString.Key.font: labelFont, NSAttributedString.Key.foregroundColor: labelTextColor,
+                                   NSAttributedString.Key.paragraphStyle: paragraph],
                       anchor: drawLabelAnchor,
                       angleRadians: labelRotationAngleRadians)
         }

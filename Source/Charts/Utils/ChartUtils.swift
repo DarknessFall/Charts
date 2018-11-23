@@ -182,10 +182,10 @@ open class ChartUtils
         
         NSUIGraphicsPushContext(context)
         
+        let size = text.size(withAttributes: attributes)
+        
         if angleRadians != 0.0
         {
-            let size = text.size(withAttributes: attributes)
-            
             // Move the text drawing rect in a way that it always rotates around its center
             drawOffset.x = -size.width * 0.5
             drawOffset.y = -size.height * 0.5
@@ -193,10 +193,9 @@ open class ChartUtils
             var translate = point
             
             // Move the "outer" rect relative to the anchor, assuming its centered
+            let rotatedSize = size.rotatedBy(radians: angleRadians)
             if anchor.x != 0.5 || anchor.y != 0.5
             {
-                let rotatedSize = size.rotatedBy(radians: angleRadians)
-                
                 translate.x -= rotatedSize.width * (anchor.x - 0.5)
                 translate.y -= rotatedSize.height * (anchor.y - 0.5)
             }
@@ -205,6 +204,7 @@ open class ChartUtils
             context.translateBy(x: translate.x, y: translate.y)
             context.rotate(by: angleRadians)
             
+            (text as NSString).draw(in: CGRect(x: drawOffset.x, y: drawOffset.y, width: rotatedSize.width, height: rotatedSize.height), withAttributes: attributes)
             (text as NSString).draw(at: drawOffset, withAttributes: attributes)
             
             context.restoreGState()
@@ -213,8 +213,6 @@ open class ChartUtils
         {
             if anchor.x != 0.0 || anchor.y != 0.0
             {
-                let size = text.size(withAttributes: attributes)
-                
                 drawOffset.x = -size.width * anchor.x
                 drawOffset.y = -size.height * anchor.y
             }
@@ -222,7 +220,8 @@ open class ChartUtils
             drawOffset.x += point.x
             drawOffset.y += point.y
             
-            (text as NSString).draw(at: drawOffset, withAttributes: attributes)
+            (text as NSString).draw(in: CGRect(x: drawOffset.x, y: drawOffset.y, width: size.width, height: size.height), withAttributes: attributes)
+            //(text as NSString).draw(at: drawOffset, withAttributes: attributes)
         }
         
         NSUIGraphicsPopContext()

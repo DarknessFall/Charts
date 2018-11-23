@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
     
-    self.activities = @[ @"Burger", @"Steak", @"Salad", @"Pasta", @"Pizza" ];
+    self.activities = @[ @"累计净值得分\n99.99", @"累计净值得分\n99.99", @"累计净值得分\n99.99", @"累计净值得分\n99.99", @"累计净值得分\n99.99" ];
     
     self.title = @"Radar Chart";
     
@@ -56,13 +56,14 @@
     _chartView.webColor = UIColor.lightGrayColor;
     _chartView.innerWebColor = UIColor.lightGrayColor;
     _chartView.webAlpha = 1.0;
+    _chartView.circleWeb = YES;
     
     RadarMarkerView *marker = (RadarMarkerView *)[RadarMarkerView viewFromXibIn:[NSBundle mainBundle]];
     marker.chartView = _chartView;
     _chartView.marker = marker;
     
     ChartXAxis *xAxis = _chartView.xAxis;
-    xAxis.labelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:9.f];
+    xAxis.labelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.f];
     xAxis.xOffset = 0.0;
     xAxis.yOffset = 0.0;
     xAxis.valueFormatter = self;
